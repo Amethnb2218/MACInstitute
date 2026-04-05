@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Espace Admin | MAC Africa Institute</title>
+    <meta name="description" content="Espace administrateur pour traiter les demandes et gérer les coordonnées du site." />
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="admin-page">
+    <a class="skip-link" href="#contenu-principal">Aller au contenu</a>
+
+    <header class="topbar" id="top">
+      <div class="container nav-wrap">
+        <a class="brand" href="index.html" aria-label="Accueil MAC Africa Institute">
+          <span class="brand-mark" aria-hidden="true">M</span>
+          <span class="brand-copy">
+            <strong>MAC Africa</strong>
+            <small>Institute</small>
+          </span>
+        </a>
+
+        <button class="nav-toggle" aria-label="Afficher la navigation" aria-expanded="false" aria-controls="main-nav">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav id="main-nav" class="main-nav" aria-label="Navigation principale">
+          <a href="index.html">Accueil</a>
+          <a href="a-propos.html">À propos</a>
+          <a href="nos-services.html">Nos Services</a>
+          <a href="nos-formations.html">Nos Formations</a>
+          <a href="contact.html">Contact</a>
+          <a href="admin.html">Admin</a>
+        </nav>
+
+        <a class="btn btn-sm" href="contact.html">Retour au site</a>
+      </div>
+    </header>
+
+    <main id="contenu-principal">
+      <section class="section admin-shell">
+        <div class="container">
+          <div class="section-head admin-intro">
+            <p class="eyebrow">Espace Admin</p>
+            <h1>Pilotage des demandes, du catalogue et des coordonnées du site</h1>
+            <p class="section-lead">
+              Cet espace centralise les demandes entrantes, les informations publiques du site ainsi que la gestion des services et formations publiés.
+            </p>
+          </div>
+
+          <section class="admin-card" id="admin-login-card">
+            <h2>Connexion administrateur</h2>
+            <p class="note">Accès réservé aux responsables autorisés.</p>
+            <form id="admin-login-form" class="admin-form">
+              <label>
+                Identifiant
+                <input type="text" name="username" autocomplete="username" required />
+              </label>
+              <label>
+                Mot de passe
+                <input type="password" name="password" autocomplete="current-password" required />
+              </label>
+              <button class="btn" type="submit">Se connecter</button>
+            </form>
+            <p id="admin-login-status" class="admin-status" aria-live="polite"></p>
+          </section>
+
+          <section class="admin-dashboard hidden" id="admin-dashboard">
+            <div class="admin-toolbar">
+              <p>
+                Connecté en tant que <strong id="admin-username">admin</strong>
+              </p>
+              <div class="hero-actions">
+                <button class="btn btn-outline" id="admin-refresh" type="button">Actualiser</button>
+                <button class="btn" id="admin-logout" type="button">Se déconnecter</button>
+              </div>
+            </div>
+
+            <article class="admin-card admin-smtp-card">
+              <div class="admin-card-head">
+                <h2>Notifications Email (SMTP)</h2>
+                <span id="admin-smtp-badge" class="admin-smtp-badge off">SMTP inactif</span>
+              </div>
+              <p id="admin-smtp-details" class="note">Chargement de la configuration SMTP...</p>
+              <form id="admin-smtp-test-form" class="admin-inline-form">
+                <label>
+                  Email de test
+                  <input type="email" name="to" placeholder="admin@exemple.com" required />
+                </label>
+                <button class="btn btn-outline" type="submit">Envoyer un email de test</button>
+              </form>
+              <p id="admin-smtp-status" class="admin-status" aria-live="polite"></p>
+            </article>
+
+            <div class="admin-kpi-grid">
+              <article class="admin-kpi-card">
+                <h3>Total demandes</h3>
+                <p id="admin-count-total">0</p>
+              </article>
+              <article class="admin-kpi-card">
+                <h3>Nouvelles</h3>
+                <p id="admin-count-nouvelle">0</p>
+              </article>
+              <article class="admin-kpi-card">
+                <h3>En cours</h3>
+                <p id="admin-count-en-cours">0</p>
+              </article>
+              <article class="admin-kpi-card">
+                <h3>Notifications</h3>
+                <p id="admin-count-notif">0</p>
+              </article>
+            </div>
+
+            <article class="admin-card">
+              <div class="admin-card-head">
+                <h2>Notifications dashboard</h2>
+                <button class="btn btn-outline" id="admin-mark-seen" type="button">Marquer tout comme vu</button>
+              </div>
+              <p class="note">Chaque nouvelle demande apparaît ici automatiquement.</p>
+              <div id="admin-notifications" class="admin-notifications"></div>
+            </article>
+
+            <div class="admin-grid admin-grid-main">
+              <article class="admin-card">
+                <div class="admin-card-head">
+                  <h2>Demandes reçues</h2>
+                  <label>
+                    Filtrer
+                    <select id="admin-status-filter">
+                      <option value="all">Toutes</option>
+                      <option value="nouvelle">Nouvelles</option>
+                      <option value="en_cours">En cours</option>
+                      <option value="traitee">Traitées</option>
+                      <option value="archivee">Archivées</option>
+                    </select>
+                  </label>
+                </div>
+                <p class="note">Chaque demande peut être mise à jour (statut + note interne).</p>
+                <div id="admin-requests" class="admin-requests"></div>
+              </article>
+
+              <article class="admin-card">
+                <h2>Coordonnées du site</h2>
+                <p class="note">Ces informations sont publiées automatiquement sur la page Contact.</p>
+                <form id="admin-settings-form" class="admin-form">
+                  <label>
+                    Nom de l'école
+                    <input type="text" name="schoolName" required />
+                  </label>
+                  <label>
+                    Slogan
+                    <input type="text" name="tagline" required />
+                  </label>
+                  <label>
+                    Email
+                    <input type="email" name="email" required />
+                  </label>
+                  <label>
+                    Téléphone
+                    <input type="text" name="telephone" required />
+                  </label>
+                  <label>
+                    Zone
+                    <input type="text" name="zone" required />
+                  </label>
+                  <label>
+                    Horaires
+                    <input type="text" name="horaires" required />
+                  </label>
+                  <label>
+                    Adresse
+                    <textarea name="adresse" required></textarea>
+                  </label>
+                  <button class="btn" type="submit">Enregistrer les coordonnées</button>
+                </form>
+                <p id="admin-settings-status" class="admin-status" aria-live="polite"></p>
+              </article>
+            </div>
+
+            <div class="admin-grid admin-grid-catalog">
+              <article class="admin-card">
+                <h2>Catalogue Services</h2>
+                <p class="note">Ajoutez, modifiez ou supprimez vos services.</p>
+
+                <form id="admin-service-create-form" class="admin-form">
+                  <label>
+                    Titre du service
+                    <input type="text" name="title" required />
+                  </label>
+                  <label>
+                    Description
+                    <textarea name="summary" required></textarea>
+                  </label>
+                  <label>
+                    Points clés (une ligne = un point)
+                    <textarea name="points"></textarea>
+                  </label>
+                  <button class="btn" type="submit">Ajouter le service</button>
+                </form>
+
+                <div id="admin-services-list" class="admin-catalog-list"></div>
+              </article>
+
+              <article class="admin-card">
+                <h2>Catalogue Formations</h2>
+                <p class="note">Ajoutez, modifiez ou supprimez vos formations.</p>
+
+                <form id="admin-formation-create-form" class="admin-form">
+                  <label>
+                    Titre de la formation
+                    <input type="text" name="title" required />
+                  </label>
+                  <label>
+                    Description
+                    <textarea name="summary" required></textarea>
+                  </label>
+                  <label>
+                    Modules / objectifs (une ligne = un point)
+                    <textarea name="points"></textarea>
+                  </label>
+                  <button class="btn" type="submit">Ajouter la formation</button>
+                </form>
+
+                <div id="admin-formations-list" class="admin-catalog-list"></div>
+              </article>
+            </div>
+
+            <p id="admin-catalog-status" class="admin-status" aria-live="polite"></p>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-wrap">
+        <nav class="footer-nav" aria-label="Navigation pied de page">
+          <a href="index.html">Accueil</a>
+          <a href="a-propos.html">À propos</a>
+          <a href="nos-services.html">Nos Services</a>
+          <a href="nos-formations.html">Nos Formations</a>
+          <a href="contact.html">Contact</a>
+          <a href="admin.html">Espace Admin</a>
+        </nav>
+        <div class="footer-meta">
+          <p>MAC Africa Institute (c) 2026. Administration sécurisée.</p>
+          <a href="#top">Retour en haut</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="admin.js"></script>
+  </body>
+</html>

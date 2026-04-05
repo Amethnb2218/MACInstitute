@@ -1,0 +1,7 @@
+node_modules/
+frontend-react/node_modules/
+frontend-react/dist/
+backend/node_modules/
+backend/.env
+backend/data/messages.json
+npm-debug.log*

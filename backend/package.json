@@ -1,0 +1,23 @@
+{
+  "name": "mac-africa-institute-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend API for MAC Africa Institute website",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "nodemon --watch src --ext js,mjs,cjs src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "morgan": "^1.10.0",
+    "nodemailer": "^8.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

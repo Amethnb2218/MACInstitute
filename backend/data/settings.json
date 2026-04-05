@@ -1,0 +1,87 @@
+{
+  "schoolName": "MAC Africa Institute",
+  "tagline": "Un Institut de Référence en Afrique",
+  "contact": {
+    "email": "contact@macafrica-institute.com",
+    "telephone": "338760809",
+    "zone": "Afrique",
+    "horaires": "Du lundi au vendredi, 8h30 à 17h30",
+    "adresse": "Adresse à compléter"
+  },
+  "services": [
+    {
+      "id": "conseil-strategique",
+      "title": "I. Conseil stratégique",
+      "summary": "Accompagner les dirigeants dans les choix structurants et les priorités de transformation.",
+      "points": [
+        "Diagnostic de maturité stratégique",
+        "Clarification de la vision et des objectifs",
+        "Feuille de route avec priorités trimestre"
+      ]
+    },
+    {
+      "id": "expertise-management",
+      "title": "II. Expertise en Management",
+      "summary": "Renforcer l'organisation interne et les pratiques de pilotage des équipes.",
+      "points": [
+        "Revue des processus clés",
+        "Structuration des rôles et responsabilités",
+        "Tableaux de bord de performance"
+      ]
+    },
+    {
+      "id": "formations",
+      "title": "III. Formations",
+      "summary": "Programme diversifié de formations certifiantes, orientées application terrain.",
+      "points": [
+        "Gestion de Projet",
+        "Audit interne et contrôle interne",
+        "Cartographie des risques",
+        "Contrôle de Gestion"
+      ]
+    }
+  ],
+  "formations": [
+    {
+      "id": "gestion-de-projet",
+      "title": "Gestion de Projet",
+      "summary": "Planification, exécution et pilotage des projets avec des outils opérationnels.",
+      "points": [
+        "Cadrage et gouvernance projet",
+        "Gestion des délais, coûts et ressources",
+        "Suivi des risques projet"
+      ]
+    },
+    {
+      "id": "audit-interne-controle-interne",
+      "title": "Audit interne et contrôle interne",
+      "summary": "Renforcement des dispositifs de contrôle et fiabilisation des processus.",
+      "points": [
+        "Techniques d'audit interne",
+        "Conception de plans de contrôle",
+        "Traitement des non-conformités"
+      ]
+    },
+    {
+      "id": "cartographie-des-risques",
+      "title": "Cartographie des risques",
+      "summary": "Identification, hiérarchisation et pilotage des risques prioritaires.",
+      "points": [
+        "Méthodes de cartographie",
+        "Évaluation de criticité",
+        "Plans d'atténuation"
+      ]
+    },
+    {
+      "id": "controle-de-gestion",
+      "title": "Contrôle de Gestion",
+      "summary": "Mise en place d'outils de pilotage pour suivre la performance financière et opérationnelle.",
+      "points": [
+        "Tableaux de bord de gestion",
+        "Suivi budgétaire",
+        "Analyse des écarts et actions correctives"
+      ]
+    }
+  ],
+  "updatedAt": "2026-04-05T19:21:03.285Z"
+}
