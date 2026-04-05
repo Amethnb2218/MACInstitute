@@ -460,6 +460,10 @@ a {
   padding: 0.78rem;
 }
 
+.hero-card dl > .hero-card-feature-wide {
+  grid-column: span 2;
+}
+
 .hero-card dt {
   font-size: 0.74rem;
   letter-spacing: 0.09em;
