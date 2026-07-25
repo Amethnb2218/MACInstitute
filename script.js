@@ -15,10 +15,10 @@ const DEFAULT_PUBLIC_SETTINGS = {
   tagline: "Un Institut de Référence en Afrique",
   contact: {
     email: "contact@macafrica-institute.com",
-    telephone: "+000 000 000 000",
-    zone: "Afrique",
+    telephone: "+221 XX XXX XX XX",
+    zone: "Afrique de l'Ouest",
     horaires: "Du lundi au vendredi, 8h30 à 17h30",
-    adresse: "Adresse à compléter",
+    adresse: "Dakar, Sénégal",
   },
   services: [
     {
@@ -56,26 +56,20 @@ const DEFAULT_PUBLIC_SETTINGS = {
     {
       id: "gestion-de-projet",
       title: "Gestion de Projet",
-      summary: "Planification, exécution et pilotage des projets avec des outils opérationnels.",
-      points: ["Cadrage et gouvernance projet", "Gestion des délais, coûts et ressources", "Suivi des risques projet"],
+      summary: "Apprenez les techniques et outils essentiels pour mener à bien vos projets. Planification, exécution et clôture dans le respect des délais et budgets.",
+      points: ["Cadrage et gouvernance projet", "Gestion des délais, coûts et ressources", "Suivi des risques et reporting"],
     },
     {
-      id: "audit-interne-controle-interne",
-      title: "Audit interne et contrôle interne",
-      summary: "Renforcement des dispositifs de contrôle et fiabilisation des processus.",
+      id: "audit-et-controle-interne",
+      title: "Audit et Contrôle Interne",
+      summary: "Découvrez les principes fondamentaux de l'audit et du contrôle interne. Processus d'audit, évaluation des risques et mise en œuvre de contrôles efficaces.",
       points: ["Techniques d'audit interne", "Conception de plans de contrôle", "Traitement des non-conformités"],
-    },
-    {
-      id: "cartographie-des-risques",
-      title: "Cartographie des risques",
-      summary: "Identification, hiérarchisation et pilotage des risques prioritaires.",
-      points: ["Méthodes de cartographie", "Évaluation de criticité", "Plans d'atténuation"],
     },
     {
       id: "controle-de-gestion",
       title: "Contrôle de Gestion",
-      summary: "Pilotage de la performance financière et opérationnelle avec des indicateurs utiles.",
-      points: ["Tableaux de bord de gestion", "Suivi budgétaire", "Analyse des écarts et actions correctives"],
+      summary: "Maîtrisez le contrôle de gestion avec notre formation dédiée. Outils et méthodes pour analyser les performances et prendre des décisions éclairées.",
+      points: ["Tableaux de bord de gestion", "Suivi budgétaire et prévisionnel", "Analyse des écarts et actions correctives"],
     },
   ],
 };
@@ -255,32 +249,29 @@ function renderFooter(settings) {
 
   document.querySelectorAll(".footer").forEach((footer) => {
     footer.innerHTML = `
-      <div class="container footer-shell footer-shell-simple">
+      <div class="container footer-wrap">
         <div class="footer-simple">
           <div class="footer-simple-main">
             <h3 class="footer-heading">${escapeHtml(settings.schoolName)}</h3>
             <p data-setting="adresse">${escapeHtml(settings.contact.adresse)}</p>
           </div>
-
           <div class="footer-contact-list">
-            <p>
-              <strong>Email</strong>
-              <a data-setting-link="email" href="mailto:${escapeHtml(settings.contact.email)}">${escapeHtml(settings.contact.email)}</a>
-            </p>
-            <p>
-              <strong>Téléphone</strong>
-              <a data-setting-link="telephone" href="tel:${escapeHtml(normalizePhoneForHref(settings.contact.telephone))}">${escapeHtml(settings.contact.telephone)}</a>
-            </p>
-            <p>
-              <strong>Zone</strong>
-              <span data-setting="zone">${escapeHtml(settings.contact.zone)}</span>
-            </p>
+            <p><strong>Email</strong><a data-setting-link="email" href="mailto:${escapeHtml(settings.contact.email)}">${escapeHtml(settings.contact.email)}</a></p>
+            <p><strong>Téléphone</strong><a data-setting-link="telephone" href="tel:${escapeHtml(normalizePhoneForHref(settings.contact.telephone))}">${escapeHtml(settings.contact.telephone)}</a></p>
+            <p><strong>Zone</strong><span data-setting="zone">${escapeHtml(settings.contact.zone)}</span></p>
           </div>
         </div>
-
-        <div class="footer-bottom">
-          <p>${escapeHtml(settings.schoolName)} (c) ${year}. Tous droits réservés.</p>
-          <a href="#top">Retour en haut</a>
+        <nav class="footer-nav" aria-label="Navigation pied de page">
+          <a href="index.html">Accueil</a>
+          <a href="a-propos.html">À propos</a>
+          <a href="nos-services.html">Services</a>
+          <a href="nos-formations.html">Formations</a>
+          <a href="contact.html">Contact</a>
+          <a href="mentions-legales.html">Mentions légales</a>
+        </nav>
+        <div class="footer-meta">
+          <p>© ${year} ${escapeHtml(settings.schoolName)}. Tous droits réservés.</p>
+          <a href="#top">Retour en haut ↑</a>
         </div>
       </div>
     `;
