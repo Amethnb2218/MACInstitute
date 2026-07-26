@@ -539,6 +539,11 @@ img { max-width: 100%; height: auto; display: block; }
 .contact-card { display: flex; flex-direction: column; gap: 0.5rem; border: 1px solid var(--gray-200); border-radius: var(--radius); background: var(--white); padding: 1.5rem; box-shadow: var(--shadow-xs); }
 .contact-card:hover { box-shadow: var(--shadow-sm); transform: none; }
 .contact-card-primary { border-top: 3px solid var(--navy); }
+.contact-card-icon {
+  width: 44px; height: 44px; display: grid; place-items: center;
+  background: var(--cream); border: 1px solid var(--gray-200);
+  border-radius: var(--radius); color: var(--navy); margin-bottom: 0.5rem;
+}
 .contact-card h3 { font-size: 0.95rem; color: var(--navy-deep); font-family: var(--font); font-weight: 700; }
 .contact-card p { color: var(--text-secondary); font-size: 0.9rem; }
 .contact-card a { font-weight: 600; color: var(--navy); }
