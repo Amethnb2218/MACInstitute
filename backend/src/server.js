@@ -531,6 +531,62 @@ async function notifyAdminByEmail(entry, settings) {
   }
 }
 
+async function sendConfirmationToClient(entry) {
+  if (!entry.email || !isValidEmail(entry.email)) return;
+
+  const transporter = getMailTransporter();
+  if (!transporter) return;
+
+  const subject = `Confirmation — Votre demande a bien été reçue | MAC Africa Institute`;
+  const text = [
+    `═══════════════════════════════════════════════`,
+    `       MAC AFRICA INSTITUTE`,
+    `       Confirmation de réception`,
+    `═══════════════════════════════════════════════`,
+    ``,
+    `Bonjour ${entry.nom},`,
+    ``,
+    `Nous avons bien reçu votre demande et nous vous en remercions.`,
+    ``,
+    `Notre équipe prendra connaissance de votre message et vous`,
+    `recontactera dans un délai de 48 heures ouvrées.`,
+    ``,
+    `──────────────────────────────────────────────`,
+    `  RÉCAPITULATIF DE VOTRE DEMANDE`,
+    `──────────────────────────────────────────────`,
+    ``,
+    `  Sujet :    ${entry.sujet || entry.typeDemande}`,
+    `  Date :     ${new Date(entry.createdAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}`,
+    ``,
+    `──────────────────────────────────────────────`,
+    ``,
+    `Si vous avez des informations complémentaires à nous`,
+    `transmettre, vous pouvez répondre directement à cet email.`,
+    ``,
+    `Cordialement,`,
+    ``,
+    `L'équipe MAC Africa Institute`,
+    `Dakar, Sénégal`,
+    ``,
+    `═══════════════════════════════════════════════`,
+    `  www.macafrica-institute.com`,
+    `  Votre partenaire d'excellence en management`,
+    `═══════════════════════════════════════════════`,
+  ].join("\n");
+
+  try {
+    await transporter.sendMail({
+      from: SMTP_FROM,
+      to: entry.email,
+      replyTo: ADMIN_NOTIFICATION_EMAIL || SMTP_FROM,
+      subject,
+      text,
+    });
+  } catch {
+    // Non-bloquant — on ne fait pas échouer la requête si l'email de confirmation échoue
+  }
+}
+
 function computeRequestStats(collection) {
   const stats = {
     total: collection.length,
@@ -645,6 +701,7 @@ app.post("/api/contact", async (req, res) => {
     };
 
     entry.emailNotification = await notifyAdminByEmail(entry, settings);
+    await sendConfirmationToClient(entry);
 
     const nextMessages = await readMessages();
     nextMessages.push(entry);
