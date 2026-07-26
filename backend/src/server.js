@@ -158,11 +158,11 @@ function defaultSettings() {
     schoolName: "MAC Africa Institute",
     tagline: "Un Institut de Référence en Afrique",
     contact: {
-      email: "contact@macafrica-institute.com",
-      telephone: "+000 000 000 000",
-      zone: "Afrique",
+      email: "elhsall@gmail.com",
+      telephone: "+221 77 000 00 00",
+      zone: "Afrique de l'Ouest",
       horaires: "Du lundi au vendredi, 8h30 à 17h30",
-      adresse: "Adresse à compléter",
+      adresse: "Dakar, Sénégal",
     },
     services: [
       {
@@ -463,17 +463,47 @@ async function notifyAdminByEmail(entry, settings) {
     };
   }
 
-  const mailSubject = `[MAC Africa] ${entry.typeDemande} - ${entry.sujet}`;
+  const mailSubject = `[MAC Africa Institute] Nouvelle demande — ${entry.sujet}`;
   const textBody = [
-    `Nouvelle demande reçue`,
-    `Type: ${entry.typeDemande}`,
-    `Nom: ${entry.nom}`,
-    `Organisation: ${entry.organisation}`,
-    `Email: ${entry.email}`,
-    `Téléphone: ${entry.telephone || "-"}`,
-    `Sujet: ${entry.sujet}`,
-    `Message: ${entry.message}`,
-    `Date: ${entry.createdAt}`,
+    `═══════════════════════════════════════════════`,
+    `   MAC AFRICA INSTITUTE — NOUVELLE DEMANDE`,
+    `═══════════════════════════════════════════════`,
+    ``,
+    `Bonjour,`,
+    ``,
+    `Vous avez reçu une nouvelle demande via le site web de MAC Africa Institute.`,
+    ``,
+    `──────────────────────────────────────────────`,
+    `  DÉTAILS DE LA DEMANDE`,
+    `──────────────────────────────────────────────`,
+    ``,
+    `  Type de demande :  ${entry.typeDemande}`,
+    `  Sujet :            ${entry.sujet}`,
+    ``,
+    `──────────────────────────────────────────────`,
+    `  INFORMATIONS DU CONTACT`,
+    `──────────────────────────────────────────────`,
+    ``,
+    `  Nom complet :      ${entry.nom}`,
+    `  Organisation :     ${entry.organisation || "Non renseignée"}`,
+    `  Email :            ${entry.email}`,
+    `  Téléphone :        ${entry.telephone || "Non renseigné"}`,
+    ``,
+    `──────────────────────────────────────────────`,
+    `  MESSAGE`,
+    `──────────────────────────────────────────────`,
+    ``,
+    `  ${entry.message}`,
+    ``,
+    `──────────────────────────────────────────────`,
+    ``,
+    `  Date de réception : ${entry.createdAt}`,
+    `  Source : Site web macafrica-institute.com`,
+    ``,
+    `═══════════════════════════════════════════════`,
+    `  MAC Africa Institute — Dakar, Sénégal`,
+    `  Votre partenaire d'excellence en management`,
+    `═══════════════════════════════════════════════`,
   ].join("\n");
 
   try {

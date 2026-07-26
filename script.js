@@ -14,8 +14,8 @@ const DEFAULT_PUBLIC_SETTINGS = {
   schoolName: "MAC Africa Institute",
   tagline: "Un Institut de Référence en Afrique",
   contact: {
-    email: "contact@macafrica-institute.com",
-    telephone: "+221 XX XXX XX XX",
+    email: "elhsall@gmail.com",
+    telephone: "+221 77 000 00 00",
     zone: "Afrique de l'Ouest",
     horaires: "Du lundi au vendredi, 8h30 à 17h30",
     adresse: "Dakar, Sénégal",
