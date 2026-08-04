@@ -612,3 +612,331 @@ applyForms.forEach((form) => {
 
 applyPublicSettings(DEFAULT_PUBLIC_SETTINGS);
 loadPublicSettings();
+
+/* ═══════════════════════════════════════════════════════════════
+   PREMIUM MOTION MODULE — v2
+   Progressive enhancement only. If any feature can't run, the site
+   still works. Fully respects prefers-reduced-motion.
+   ═══════════════════════════════════════════════════════════════ */
+(function premiumMotion() {
+  "use strict";
+
+  const prefersReduced =
+    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const isTouch = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+
+  const raf =
+    window.requestAnimationFrame ||
+    function (cb) {
+      return window.setTimeout(cb, 16);
+    };
+
+  /* ---- 1. Scroll progress bar ---- */
+  function initScrollProgress() {
+    if (prefersReduced) return;
+    const bar = document.createElement("div");
+    bar.className = "scroll-progress";
+    document.body.appendChild(bar);
+
+    let ticking = false;
+    function update() {
+      const doc = document.documentElement;
+      const scrollTop = doc.scrollTop || document.body.scrollTop;
+      const height = doc.scrollHeight - doc.clientHeight;
+      const ratio = height > 0 ? scrollTop / height : 0;
+      bar.style.transform = "scaleX(" + ratio.toFixed(4) + ")";
+      ticking = false;
+    }
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!ticking) {
+          raf(update);
+          ticking = true;
+        }
+      },
+      { passive: true }
+    );
+    update();
+  }
+
+  /* ---- 2. Nav shrink / frost on scroll ---- */
+  function initNavShrink() {
+    const bar = document.querySelector(".topbar");
+    if (!bar) return;
+    let ticking = false;
+    function update() {
+      const y = window.pageYOffset || document.documentElement.scrollTop;
+      bar.classList.toggle("scrolled", y > 24);
+      ticking = false;
+    }
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!ticking) {
+          raf(update);
+          ticking = true;
+        }
+      },
+      { passive: true }
+    );
+    update();
+  }
+
+  /* ---- 3. Extra reveal registration (variants + stagger) ---- */
+  function initExtraReveals() {
+    const selector =
+      ".reveal-left, .reveal-right, .reveal-scale, .reveal-blur, .stagger";
+    const items = document.querySelectorAll(selector);
+    if (!items.length) return;
+
+    if (prefersReduced || !("IntersectionObserver" in window)) {
+      items.forEach(function (el) {
+        el.classList.add("in-view");
+      });
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      function (entries, obs) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("in-view");
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -30px 0px" }
+    );
+    items.forEach(function (el) {
+      observer.observe(el);
+    });
+  }
+
+  /* ---- 4. Split-text hero reveal ---- */
+  function initSplitText() {
+    const targets = document.querySelectorAll("[data-split]");
+    if (!targets.length) return;
+
+    targets.forEach(function (el) {
+      if (prefersReduced) {
+        el.classList.add("split-in");
+        return;
+      }
+      const text = el.textContent.trim();
+      const words = text.split(/\s+/);
+      el.innerHTML = "";
+      el.classList.add("split-ready");
+      words.forEach(function (word, i) {
+        const line = document.createElement("span");
+        line.className = "split-line";
+        const inner = document.createElement("span");
+        inner.className = "split-word";
+        inner.style.setProperty("--i", i);
+        inner.textContent = word;
+        line.appendChild(inner);
+        el.appendChild(line);
+        // preserve spacing between inline words
+        el.appendChild(document.createTextNode(" "));
+      });
+      // trigger on next frame for the transition to catch
+      raf(function () {
+        raf(function () {
+          el.classList.add("split-in");
+        });
+      });
+    });
+  }
+
+  /* ---- 5. Magnetic buttons ---- */
+  function initMagnetic() {
+    if (prefersReduced || isTouch) return;
+    const els = document.querySelectorAll(".magnetic, .btn");
+    els.forEach(function (el) {
+      const strength = el.classList.contains("magnetic") ? 0.4 : 0.18;
+      el.addEventListener("mousemove", function (e) {
+        const r = el.getBoundingClientRect();
+        const mx = e.clientX - r.left - r.width / 2;
+        const my = e.clientY - r.top - r.height / 2;
+        el.style.transform =
+          "translate(" + mx * strength + "px," + my * strength + "px)";
+      });
+      el.addEventListener("mouseleave", function () {
+        el.style.transform = "";
+      });
+    });
+  }
+
+  /* ---- 6. 3D tilt cards ---- */
+  function initTilt() {
+    if (prefersReduced || isTouch) return;
+    const cards = document.querySelectorAll("[data-tilt]");
+    cards.forEach(function (card) {
+      card.classList.add("tilt");
+      // add a glare layer
+      const glare = document.createElement("span");
+      glare.className = "tilt-glare";
+      card.appendChild(glare);
+
+      const max = 8; // degrees
+      card.addEventListener("mousemove", function (e) {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        const rx = (py - 0.5) * -2 * max;
+        const ry = (px - 0.5) * 2 * max;
+        card.style.transform =
+          "perspective(900px) rotateX(" +
+          rx.toFixed(2) +
+          "deg) rotateY(" +
+          ry.toFixed(2) +
+          "deg) translateY(-4px)";
+        glare.style.setProperty("--gx", (px * 100).toFixed(1) + "%");
+        glare.style.setProperty("--gy", (py * 100).toFixed(1) + "%");
+      });
+      card.addEventListener("mouseleave", function () {
+        card.style.transform = "";
+      });
+    });
+  }
+
+  /* ---- 7. Hero parallax (scroll + pointer) ---- */
+  function initHeroParallax() {
+    if (prefersReduced) return;
+    const bg = document.querySelector(".hero-fullscreen-bg");
+    const content = document.querySelector(".hero-fullscreen-content");
+    const hero = document.querySelector(".hero-fullscreen");
+    if (!hero) return;
+
+    if (bg) {
+      let ticking = false;
+      function onScroll() {
+        const y = window.pageYOffset || 0;
+        if (y < window.innerHeight) {
+          bg.style.transform = "translateY(" + y * 0.28 + "px) scale(1.08)";
+          if (content) content.style.transform = "translateY(" + y * 0.12 + "px)";
+        }
+        ticking = false;
+      }
+      window.addEventListener(
+        "scroll",
+        function () {
+          if (!ticking) {
+            raf(onScroll);
+            ticking = true;
+          }
+        },
+        { passive: true }
+      );
+    }
+
+    if (!isTouch) {
+      const orbs = hero.querySelectorAll(".hero-orb");
+      hero.addEventListener("mousemove", function (e) {
+        const cx = (e.clientX / window.innerWidth - 0.5) * 2;
+        const cy = (e.clientY / window.innerHeight - 0.5) * 2;
+        orbs.forEach(function (orb, i) {
+          const depth = (i + 1) * 12;
+          orb.style.transform =
+            "translate(" + cx * depth + "px," + cy * depth + "px)";
+        });
+        if (content)
+          content.style.marginLeft = cx * 6 + "px";
+      });
+    }
+  }
+
+  /* ---- 8. Inject hero decorative layers ---- */
+  function initHeroDecor() {
+    const hero = document.querySelector(".hero-fullscreen");
+    if (!hero || prefersReduced) return;
+
+    if (!hero.querySelector(".hero-orb")) {
+      const g1 = document.createElement("span");
+      g1.className = "hero-orb orb-gold";
+      const g2 = document.createElement("span");
+      g2.className = "hero-orb orb-green";
+      const overlay = hero.querySelector(".hero-fullscreen-overlay");
+      if (overlay) {
+        hero.insertBefore(g1, overlay.nextSibling);
+        hero.insertBefore(g2, overlay.nextSibling);
+      } else {
+        hero.appendChild(g1);
+        hero.appendChild(g2);
+      }
+    }
+
+    if (!hero.querySelector(".hero-scroll-cue")) {
+      const cue = document.createElement("div");
+      cue.className = "hero-scroll-cue";
+      cue.innerHTML =
+        '<span class="cue-track"><span class="cue-dot"></span></span><span>Explorer</span>';
+      hero.appendChild(cue);
+    }
+  }
+
+  /* ---- 9. Back-to-top FAB ---- */
+  function initBackToTop() {
+    if (document.querySelector(".to-top")) return;
+    const btn = document.createElement("button");
+    btn.className = "to-top";
+    btn.setAttribute("aria-label", "Retour en haut de la page");
+    btn.innerHTML =
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+    document.body.appendChild(btn);
+
+    let ticking = false;
+    function update() {
+      const y = window.pageYOffset || 0;
+      btn.classList.toggle("show", y > 600);
+      ticking = false;
+    }
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!ticking) {
+          raf(update);
+          ticking = true;
+        }
+      },
+      { passive: true }
+    );
+    btn.addEventListener("click", function () {
+      window.scrollTo({
+        top: 0,
+        behavior: prefersReduced ? "auto" : "smooth",
+      });
+    });
+    update();
+  }
+
+  /* ---- 10. Marquee duplication (seamless loop) ---- */
+  function initMarquee() {
+    const tracks = document.querySelectorAll(".marquee-track");
+    tracks.forEach(function (track) {
+      if (track.dataset.dupe === "true") return;
+      track.dataset.dupe = "true";
+      track.innerHTML = track.innerHTML + track.innerHTML;
+    });
+  }
+
+  /* ---- boot ---- */
+  function boot() {
+    initScrollProgress();
+    initNavShrink();
+    initExtraReveals();
+    initSplitText();
+    initMagnetic();
+    initTilt();
+    initHeroDecor();
+    initHeroParallax();
+    initBackToTop();
+    initMarquee();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+})();
