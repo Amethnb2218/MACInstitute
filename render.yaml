@@ -1,0 +1,40 @@
+# Blueprint Render pour MAC Africa Institute
+# Deploiement : dashboard.render.com -> New + -> Blueprint -> selectionner ce repo
+# Render lit ce fichier et cree le service automatiquement.
+#
+# Le backend Express (dossier backend/) sert TOUT le site statique
+# (fichiers HTML a la racine du repo) + le formulaire de contact + l'admin.
+services:
+  - type: web
+    name: macinstitute
+    runtime: node
+    plan: free
+    region: frankfurt
+    branch: main
+    autoDeploy: true
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: 20.18.0
+      - key: NODE_ENV
+        value: production
+      # --- Admin : definis ADMIN_PASSWORD dans le dashboard Render ---
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_PASSWORD
+        sync: false
+      # --- Email de notification (optionnel) : a definir dans le dashboard ---
+      - key: ADMIN_NOTIFICATION_EMAIL
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        sync: false
